@@ -14,12 +14,14 @@ exports.getAllCocktails = (req, res) => {
 exports.getCocktail = async (req, res) => {
     let CocktailId = parseInt(req.params.id);
 
-    //vérification si le champ Id est présent et cohérent
-    if (!CocktailId) {
-        return res.status(400).json({ message: 'Missing parameter'})
-    }
+        //vérification si le champ Id est présent et cohérent
+        if (!CocktailId) {
+            //return res.status(400).json({ message: 'Missing parameter'})
+            throw new Error('Missing parameter')
+        }
 
     try {
+
         //récupération du Cocktail
         let cocktail = await Cocktail.findOne({ where: {id: CocktailId}, raw: true })
 
@@ -32,6 +34,7 @@ exports.getCocktail = async (req, res) => {
         return res.json({data: Cocktail}) 
         
     } catch (err) {
+        console.log(err)
         return res.status(500).json({message: 'Database error', error: err})
     }
 
@@ -84,6 +87,18 @@ exports.updateCocktail = (req, res) => {
     if (!CocktailId) {
         return res.status(400).json({ message: 'Missing parameter'})
     }
+
+    // try {
+    //     //recherche de l'Cocktail
+    //     let cocktail = await Cocktail.findOne({ where: {id: CocktailId}, raw: true })
+
+    //     //vérifier si l'Cocktail existe
+    //     if ((cocktail === null)) {
+    //         return res.status(404).json({ message: 'This Cocktail doesn\'t exist' })
+    //     } 
+    // } catch (err) {
+        
+    // }
 
     //recherche de l'Cocktail
     Cocktail.findOne({ where: {id: CocktailId}, raw: true })
